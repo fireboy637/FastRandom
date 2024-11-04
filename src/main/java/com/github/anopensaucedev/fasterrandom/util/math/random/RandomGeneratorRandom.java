@@ -94,6 +94,11 @@ public class RandomGeneratorRandom implements BaseRandom {
 			return new RandomGeneratorRandom((long) seed.hashCode() ^ this.seed);
 		}
 
+		//@Override (overriding will break older MC versions)
+		public Random split(long seed) {
+			return new RandomGeneratorRandom(seed);
+		}
+
 		@Override
 		@VisibleForTesting
 		public void addDebugInfo(@NotNull StringBuilder info) {

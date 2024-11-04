@@ -1,6 +1,7 @@
 package com.github.anopensaucedev.fasterrandom.mixin;
 
 import com.github.anopensaucedev.fasterrandom.FasterRandom;
+import com.github.anopensaucedev.fasterrandom.util.config.FasterRandomConfig;
 import com.github.anopensaucedev.fasterrandom.util.jvm.JvmUtil;
 import com.google.common.collect.ImmutableMap;
 import org.jetbrains.annotations.NotNull;
@@ -22,8 +23,16 @@ public class FasterRandomMixinPlugin implements IMixinConfigPlugin {
 
 	private static boolean hasLoggedLoadingMessage = false;
 
+	public static FasterRandomConfig.ConfigPatchSet configPatchSet = FasterRandomConfig.getOrCreateConfig();
+
+
 	@Override
 	public boolean shouldApplyMixin(@NotNull String targetClassName, @NotNull String mixinClassName) {
+
+		if(mixinClassName.toLowerCase().contains("patches.mergeentityrandom") && !configPatchSet.MERGE_ENTITY_RANDOM){
+			return false;
+		}
+
 		if (!JvmUtil.isRandomGeneratorFactorySupported()) {
 			if (hasLoggedLoadingMessage) {
 				return false;

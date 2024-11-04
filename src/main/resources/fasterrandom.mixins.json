@@ -6,7 +6,8 @@
   "plugin": "com.github.anopensaucedev.fasterrandom.mixin.FasterRandomMixinPlugin",
   "mixins": [
     "ChunkRandomMixin",
-    "RandomMixin"
+    "RandomMixin",
+    "patches.MergeEntityRandom"
   ],
   "injectors": {
     "defaultRequire": 1

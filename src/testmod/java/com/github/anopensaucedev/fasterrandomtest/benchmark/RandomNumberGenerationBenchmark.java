@@ -105,9 +105,11 @@ public class RandomNumberGenerationBenchmark {
 		BENCHMARK_LOGGER.info("ThreadLocalRandom time: {}{}s{}, mean: {}{}s{}", ANSI_COLOURS.BOLD_YELLOW.value, threadLocalFinish, ANSI_COLOURS.RESET.value, ANSI_COLOURS.BOLD_YELLOW.value, (float) (threadLocalFinish / ITERATIONS), ANSI_COLOURS.RESET.value);
 		TIMING_VALUES.add(threadLocalFinish); // 2
 
+		final String LXM_GENERATOR = "L64X128MixRandom";
+
 		// LXM random
-		BENCHMARK_LOGGER.info("LXM");
-		var generator = RandomGeneratorFactory.of("L64X128MixRandom").create();
+		BENCHMARK_LOGGER.info(LXM_GENERATOR);
+		var generator = RandomGeneratorFactory.of(LXM_GENERATOR).create();
 		var lxmStart = System.nanoTime();
 		for (int i = 0; i < ITERATIONS; i++) {
 			generator.nextFloat();

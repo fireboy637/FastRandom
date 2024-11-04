@@ -20,7 +20,9 @@
   "license": "Apache-2.0",
   "icon": "assets/fasterrandom/icon.png",
   "environment": "*",
-  "entrypoints": {},
+  "entrypoints": {
+    "main": ["com.github.anopensaucedev.fasterrandom.FasterRandom"]
+  },
   "mixins": [
     "fasterrandom.mixins.json"
   ],
