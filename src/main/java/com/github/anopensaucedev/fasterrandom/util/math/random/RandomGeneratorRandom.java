@@ -27,12 +27,12 @@ public class RandomGeneratorRandom implements BitRandomSource {
 	}
 
 	@Override
-	public RandomSource fork() {
+	public @NonNull RandomSource fork() {
 		return new RandomGeneratorRandom(this.nextLong());
 	}
 
 	@Override
-	public PositionalRandomFactory forkPositional() {
+	public @NonNull PositionalRandomFactory forkPositional() {
 		return new Splitter(this.nextLong());
 	}
 
