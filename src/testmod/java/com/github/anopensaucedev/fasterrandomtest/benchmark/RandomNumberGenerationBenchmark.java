@@ -1,8 +1,9 @@
 package com.github.anopensaucedev.fasterrandomtest.benchmark;
 
-import net.minecraft.util.math.random.CheckedRandom;
-import net.minecraft.util.math.random.RandomSeed;
-import net.minecraft.util.math.random.Xoroshiro128PlusPlusRandom;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.level.levelgen.LegacyRandomSource;
+import net.minecraft.world.level.levelgen.RandomSupport;
+import net.minecraft.world.level.levelgen.XoroshiroRandomSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -20,11 +21,11 @@ public class RandomNumberGenerationBenchmark {
 	/**
 	 * Minecraft's vanilla random number generator.
 	 */
-	private static final CheckedRandom VANILLA_RANDOM = new CheckedRandom(RandomSeed.getSeed());
+	private static final LegacyRandomSource VANILLA_RANDOM = new LegacyRandomSource(RandomSupport.generateUniqueSeed());
 	/**
 	 * Legacy {@link Random} from {@link java.util}.
 	 */
-	private static final Random OLD_RANDOM = new Random(RandomSeed.getSeed());
+	private static final Random OLD_RANDOM = new Random(RandomSupport.generateUniqueSeed());
 	/**
 	 * An ordered list of random number generator names.
 	 */
@@ -44,7 +45,7 @@ public class RandomNumberGenerationBenchmark {
 
 		public final String value;
 
-		private ANSI_COLOURS(String data){
+		ANSI_COLOURS(String data){
 			this.value = data;
 		}
 
@@ -124,7 +125,7 @@ public class RandomNumberGenerationBenchmark {
 		TIMING_VALUES.add(lxmFinish); // 3
 
 		BENCHMARK_LOGGER.info("Xoroshiro128++Random");
-		Xoroshiro128PlusPlusRandom xoroshirogenerator = new Xoroshiro128PlusPlusRandom(0);
+		XoroshiroRandomSource xoroshirogenerator = new XoroshiroRandomSource(0);
 		var xoroStart = System.nanoTime();
 		for (int i = 0; i < ITERATIONS; i++){
 			xoroshirogenerator.nextFloat();
@@ -146,7 +147,7 @@ public class RandomNumberGenerationBenchmark {
 	/**
 	 * Runs a legacy benchmark of various random number generators.
 	 * Can be slow (and thus impact loading times if ran on game start).
-	 * This is an older benchmark from Methane, where {@link CheckedRandom} is 100x slower on average than {@link ThreadLocalRandom}.
+	 * This is an older benchmark from Methane, where {@link LegacyRandomSource} is 100x slower on average than {@link ThreadLocalRandom}.
 	 */
 	public static void runLegacyBenchmark() {
 		int iterations = 1000000000;
@@ -161,7 +162,7 @@ public class RandomNumberGenerationBenchmark {
 				"Legacy Random Number Generation Benchmark (ThreadLocal): {}", RandomNumberGenerationBenchmark.toSeconds(finalTime));
 
 		// Seeded or not, this is always slower
-		net.minecraft.util.math.random.Random random2 = net.minecraft.util.math.random.Random.create(RandomSeed.getSeed());
+		net.minecraft.util.RandomSource random2 = RandomSource.create(RandomSupport.generateUniqueSeed());
 		long time2 = System.nanoTime();
 		for (int x = 0; x < iterations; x++) {
 			random2.nextFloat();
